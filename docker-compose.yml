@@ -1,0 +1,41 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    volumes:
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_pw
+      - POSTGRES_DB=postgres_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 120
+    ports:
+      - 5432:5432
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.46
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    container_name: web
+    restart: on-failure
+    build:
+      context: "./"
+    ports:
+      - "8000:8000"
+    environment:
+      WAIT_HOSTS: postgres:5432, jaeger:4317
+      DATABASE_URL: postgres://postgres:postgres_pw@postgres:5432/postgres_db
+      JAEGER_URL: http://jaeger:4317

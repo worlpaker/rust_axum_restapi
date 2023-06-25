@@ -1,0 +1,832 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Library Rent Book API",
+        "description": "API for managing library book rentals.",
+        "license": {
+            "name": ""
+        },
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/api/author": {
+            "get": {
+                "tags": [
+                    "author"
+                ],
+                "operationId": "authors",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list matching authors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorsBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/author/create": {
+            "post": {
+                "tags": [
+                    "author"
+                ],
+                "operationId": "create_author",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "author created succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedAuthorBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/author/{author_id}": {
+            "get": {
+                "tags": [
+                    "author"
+                ],
+                "operationId": "get_author",
+                "parameters": [
+                    {
+                        "name": "author_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list author",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAuthorBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/book": {
+            "get": {
+                "tags": [
+                    "book"
+                ],
+                "operationId": "books",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/Status"
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "author",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list matching books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BooksBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/book/create": {
+            "post": {
+                "tags": [
+                    "book"
+                ],
+                "operationId": "create_book",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Book"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "book created succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedBookBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/book/{book_id}": {
+            "get": {
+                "tags": [
+                    "book"
+                ],
+                "operationId": "get_book",
+                "parameters": [
+                    {
+                        "name": "book_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list book",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBookBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "operationId": "users",
+                "parameters": [
+                    {
+                        "name": "user_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "book_name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list matching users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsersBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/create": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "operationId": "create_user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "user created succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreatedUserBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/rent": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "operationId": "rent_book",
+                "parameters": [
+                    {
+                        "name": "nation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RentBook"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "book rented succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RentedBookBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/{nation_id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "operationId": "get_user",
+                "parameters": [
+                    {
+                        "name": "nation_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUserBody"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Author": {
+                "type": "object",
+                "description": "Represents an author.",
+                "required": [
+                    "name",
+                    "country",
+                    "birth_date"
+                ],
+                "properties": {
+                    "birth_date": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AuthorRow": {
+                "type": "object",
+                "description": "Represents a row in the author table of the database.",
+                "required": [
+                    "name",
+                    "country",
+                    "birth_date"
+                ],
+                "properties": {
+                    "birth_date": {
+                        "type": "string"
+                    },
+                    "books": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AuthorsBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing multiple authors.",
+                "required": [
+                    "authors"
+                ],
+                "properties": {
+                    "authors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Author"
+                        }
+                    }
+                }
+            },
+            "Book": {
+                "type": "object",
+                "description": "Represents a book.",
+                "required": [
+                    "name",
+                    "year",
+                    "category",
+                    "status",
+                    "author"
+                ],
+                "properties": {
+                    "author": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/Status"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "BooksBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing multiple books.",
+                "required": [
+                    "books"
+                ],
+                "properties": {
+                    "books": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Book"
+                        }
+                    }
+                }
+            },
+            "CreatedAuthorBody": {
+                "type": "object",
+                "description": "Represents the body of a request to create an author.",
+                "required": [
+                    "info",
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "info": {
+                        "$ref": "#/components/schemas/Author"
+                    }
+                }
+            },
+            "CreatedBookBody": {
+                "type": "object",
+                "description": "Represents the body of a request to create a book.",
+                "required": [
+                    "info",
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "info": {
+                        "$ref": "#/components/schemas/Book"
+                    }
+                }
+            },
+            "CreatedUserBody": {
+                "type": "object",
+                "description": "Represents the body of a response when a user created.",
+                "required": [
+                    "info",
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "info": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                }
+            },
+            "GetAuthorBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing a single author.",
+                "required": [
+                    "author"
+                ],
+                "properties": {
+                    "author": {
+                        "$ref": "#/components/schemas/AuthorRow"
+                    }
+                }
+            },
+            "GetBookBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing a single book.",
+                "required": [
+                    "book"
+                ],
+                "properties": {
+                    "book": {
+                        "$ref": "#/components/schemas/Book"
+                    }
+                }
+            },
+            "GetUserBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing a user's history.",
+                "required": [
+                    "user"
+                ],
+                "properties": {
+                    "user": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserHistoryRow"
+                        }
+                    }
+                }
+            },
+            "RentBook": {
+                "type": "object",
+                "description": "Represents a book to be rented.",
+                "required": [
+                    "book_name",
+                    "due_date"
+                ],
+                "properties": {
+                    "book_name": {
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RentedBookBody": {
+                "type": "object",
+                "description": "Represents the body of a response when a user rents a book.",
+                "required": [
+                    "message",
+                    "info"
+                ],
+                "properties": {
+                    "info": {
+                        "$ref": "#/components/schemas/UserRentBook"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Status": {
+                "type": "string",
+                "description": "Represents the status of a book.",
+                "enum": [
+                    "available",
+                    "notavailable",
+                    "rented"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "description": "Represents a user.",
+                "required": [
+                    "nation_id",
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nation_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserHistoryRow": {
+                "type": "object",
+                "description": "Represents a row in the user's rental history.",
+                "required": [
+                    "name",
+                    "nation_id",
+                    "book_name",
+                    "due_date"
+                ],
+                "properties": {
+                    "book_name": {
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nation_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserRentBook": {
+                "type": "object",
+                "description": "Represents a book rental by a user.",
+                "required": [
+                    "nation_id",
+                    "book_name",
+                    "due_date"
+                ],
+                "properties": {
+                    "book_name": {
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "type": "string"
+                    },
+                    "nation_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserRow": {
+                "type": "object",
+                "description": "Represents a row in the user table.",
+                "required": [
+                    "nation_id",
+                    "user_name",
+                    "book_name"
+                ],
+                "properties": {
+                    "book_name": {
+                        "type": "string"
+                    },
+                    "nation_id": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UsersBody": {
+                "type": "object",
+                "description": "Represents the body of a response containing multiple users.",
+                "required": [
+                    "users"
+                ],
+                "properties": {
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserRow"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
