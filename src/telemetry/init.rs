@@ -16,7 +16,7 @@ pub fn tracing() {
 
     let otel_exporter = opentelemetry_otlp::new_exporter()
         .tonic()
-        .with_endpoint(&var("JAEGER_URL").expect("JAEGER_URL must be in environment"));
+        .with_endpoint(var("JAEGER_URL").expect("JAEGER_URL must be in environment"));
 
     let otel_resource = opentelemetry::sdk::Resource::new([opentelemetry::KeyValue::new(
         "service.name",
