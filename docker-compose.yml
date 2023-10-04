@@ -3,7 +3,7 @@ services:
     container_name: postgres
     image: postgres
     volumes:
-      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./migrations/04102023_init.up.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres_pw
